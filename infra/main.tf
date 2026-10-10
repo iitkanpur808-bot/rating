@@ -50,15 +50,15 @@ resource "azurerm_storage_account" "data" {
   account_replication_type = "LRS"
 }
 
-resource "azurerm_container_app_environment" "env" {
-  name                = "ideation-scoring-env"
-  location            = var.location
-  resource_group_name = data.azurerm_resource_group.rg.name
+# Reuses the existing ClassPulse env (subscription allows only 1 per region)
+data "azurerm_container_app_environment" "env" {
+  name                = "classpulse-env-bxev55"
+  resource_group_name = var.resource_group_name
 }
 
 resource "azurerm_container_app_environment_storage" "data" {
   name                         = "ideation-data"
-  container_app_environment_id = azurerm_container_app_environment.env.id
+  container_app_environment_id = data.azurerm_container_app_environment.env.id
   account_name                 = azurerm_storage_account.data.name
   share_name                   = azurerm_storage_share.data.name
   access_key                   = azurerm_storage_account.data.primary_access_key
@@ -68,7 +68,7 @@ resource "azurerm_container_app_environment_storage" "data" {
 resource "azurerm_container_app" "app" {
   name                         = "ideation-scoring"
   resource_group_name          = data.azurerm_resource_group.rg.name
-  container_app_environment_id = azurerm_container_app_environment.env.id
+  container_app_environment_id = data.azurerm_container_app_environment.env.id
   revision_mode                = "Single"
 
   registry {

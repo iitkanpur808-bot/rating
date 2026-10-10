@@ -9,10 +9,11 @@ import sqlite3
 from functools import wraps
 
 from authlib.integrations.flask_client import OAuth
-from flask import (Flask, abort, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, abort, redirect, render_template, request, session, url_for
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.secret_key = os.environ["SECRET_KEY"]
 
 DB_PATH = os.environ.get("DB_PATH", "ideation.db")
@@ -39,7 +40,9 @@ google = oauth.register(
 
 
 def db():
-    conn = sqlite3.connect(DB_PATH)
+    # nolock=1: Azure Files (SMB) doesn't support POSIX byte-range locks;
+    # safe because the app runs a single replica.
+    conn = sqlite3.connect(f"file:{DB_PATH}?nolock=1", uri=True)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -107,7 +110,9 @@ def index():
 
 @app.route("/login")
 def login():
-    return google.authorize_redirect(url_for("callback", _external=True))
+    return google.authorize_redirect(
+        url_for("callback", _external=True, _scheme="https")
+    )
 
 
 @app.route("/callback")
@@ -224,4 +229,4 @@ def forbidden(_):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "8000")))
