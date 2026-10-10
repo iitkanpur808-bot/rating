@@ -4,7 +4,7 @@
   <h2>My submissions</h2>
   {% if rows %}
   <table>
-    <tr><th>Project</th>{% for _, label in parameters %}<th>{{ label }}</th>{% endfor %}<th>Comments</th><th>Submitted</th></tr>
+    <tr><th>Group</th>{% for _, label in parameters %}<th>{{ label }}</th>{% endfor %}<th>Comments</th><th>Submitted</th></tr>
     {% for r in rows %}
     <tr>
       <td><b>{{ r.project_title }}</b><br><span class="muted">{{ r.project_idea }}</span></td>

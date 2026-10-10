@@ -13,7 +13,7 @@
 <div class="card">
   {% if rows %}
   <table>
-    <tr><th>Project</th><th>Submitted by</th>{% for _, label in parameters %}<th>{{ label }}</th>{% endfor %}<th>Avg</th><th>Comments</th><th>When</th></tr>
+    <tr><th>Group</th><th>Submitted by</th>{% for _, label in parameters %}<th>{{ label }}</th>{% endfor %}<th>Avg</th><th>Comments</th><th>When</th></tr>
     {% for r in rows %}
     <tr>
       <td><b>{{ r.project_title }}</b><br><span class="muted">{{ r.project_idea }}</span></td>

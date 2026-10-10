@@ -158,7 +158,7 @@ def submit():
             "index.html",
             user=user,
             parameters=PARAMETERS,
-            error="Project title is required.",
+            error="Group name is required.",
         ), 400
     with db() as conn:
         conn.execute(
