@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideation Scoring</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f4f6fb; color: #1d2433; }
+    header { background: #1d2433; color: #fff; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    header a { color: #fff; text-decoration: none; margin-left: 16px; }
+    header a:hover { text-decoration: underline; }
+    main { max-width: 760px; margin: 32px auto; padding: 0 16px; }
+    .card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 20px; }
+    label { display: block; font-weight: 600; margin: 14px 0 4px; }
+    input[type=text], textarea, select { width: 100%; padding: 8px 10px; border: 1px solid #ccd3e0; border-radius: 6px; font: inherit; }
+    textarea { min-height: 80px; }
+    button, .btn { background: #2f6fed; color: #fff; border: 0; border-radius: 6px; padding: 10px 20px; font: inherit; cursor: pointer; display: inline-block; text-decoration: none; margin-top: 16px; }
+    button:hover, .btn:hover { background: #2459c4; }
+    .error { background: #fdecea; color: #b3261e; padding: 10px 14px; border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 8px; border-bottom: 1px solid #e6e9f0; vertical-align: top; }
+    th { background: #f0f3fa; }
+    .stat { display: inline-block; background: #eef3ff; border-radius: 8px; padding: 12px 18px; margin: 4px 8px 4px 0; }
+    .stat b { font-size: 20px; display: block; }
+    .muted { color: #667; font-size: 13px; }
+  </style>
+</head>
+<body>
+<header>
+  <div><a href="/" style="margin-left:0"><b>Ideation Scoring</b></a></div>
+  <div>
+    {% if user %}
+      {% if user.email.lower() in admin_emails %}<a href="/admin">Admin dashboard</a>{% endif %}
+      <a href="/my">My submissions</a>
+      <span class="muted" style="color:#bbc">{{ user.email }}</span>
+      <a href="/logout">Log out</a>
+    {% else %}
+      <a href="/login">Sign in with Google</a>
+    {% endif %}
+  </div>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>

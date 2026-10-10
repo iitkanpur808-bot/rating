@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Access denied</h2>
+  <p>This page is for admins only{% if user %} (signed in as {{ user.email }}){% endif %}.</p>
+  <a class="btn" href="/">Back home</a>
+</div>
+{% endblock %}

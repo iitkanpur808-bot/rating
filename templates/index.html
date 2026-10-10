@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Submit your ideation project</h2>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  {% if not user %}
+    <p>Sign in with your Google account to submit your project and rate it.</p>
+    <a class="btn" href="/login">Sign in with Google</a>
+  {% else %}
+  <form method="post" action="/submit">
+    <label for="project_title">Project title</label>
+    <input type="text" id="project_title" name="project_title" required>
+
+    <label for="project_idea">Describe your idea (optional)</label>
+    <textarea id="project_idea" name="project_idea"></textarea>
+
+    {% for key, label in parameters %}
+    <label for="{{ key }}">{{ label }} — rate 5 (best) to 1 (lowest)</label>
+    <select id="{{ key }}" name="{{ key }}" required>
+      <option value="">Choose…</option>
+      {% for n in [5, 4, 3, 2, 1] %}<option value="{{ n }}">{{ n }}</option>{% endfor %}
+    </select>
+    {% endfor %}
+
+    <label for="comments">Comments (optional)</label>
+    <textarea id="comments" name="comments"></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

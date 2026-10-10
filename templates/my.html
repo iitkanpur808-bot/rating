@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>My submissions</h2>
+  {% if rows %}
+  <table>
+    <tr><th>Project</th>{% for _, label in parameters %}<th>{{ label }}</th>{% endfor %}<th>Comments</th><th>Submitted</th></tr>
+    {% for r in rows %}
+    <tr>
+      <td><b>{{ r.project_title }}</b><br><span class="muted">{{ r.project_idea }}</span></td>
+      {% for key, _ in parameters %}<td>{{ r[key] }}</td>{% endfor %}
+      <td>{{ r.comments }}</td>
+      <td class="muted">{{ r.created_at }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>No submissions yet. <a href="/">Submit one</a>.</p>
+  {% endif %}
+</div>
+{% endblock %}

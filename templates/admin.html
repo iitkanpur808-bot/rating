@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Admin dashboard — ideation results</h2>
+  <div>
+    <span class="stat"><b>{{ stats.n }}</b>submissions</span>
+    {% for key, label in parameters %}
+    <span class="stat"><b>{{ stats[key] or '–' }}</b>avg {{ label }}</span>
+    {% endfor %}
+    <span class="stat"><b>{{ stats.overall or '–' }}</b>avg overall</span>
+  </div>
+</div>
+<div class="card">
+  {% if rows %}
+  <table>
+    <tr><th>Project</th><th>Submitted by</th>{% for _, label in parameters %}<th>{{ label }}</th>{% endfor %}<th>Avg</th><th>Comments</th><th>When</th></tr>
+    {% for r in rows %}
+    <tr>
+      <td><b>{{ r.project_title }}</b><br><span class="muted">{{ r.project_idea }}</span></td>
+      <td>{{ r.user_name }}<br><span class="muted">{{ r.user_email }}</span></td>
+      {% for key, _ in parameters %}<td>{{ r[key] }}</td>{% endfor %}
+      <td>{{ ((r.innovation + r.feasibility + r.impact) / 3.0) | round(1) }}</td>
+      <td>{{ r.comments }}</td>
+      <td class="muted">{{ r.created_at }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>No submissions yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
